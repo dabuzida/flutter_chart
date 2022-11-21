@@ -1,3 +1,61 @@
+class UsageInfo {
+  // 'all' | 'call_reach' | 'call_complete' | 'consent_reach' | 'consent_complete' | 'SMS' | 'LMS'
+
+  static const List<Map<String, dynamic>> dataHourly = [
+    {'cost': 6300, 'count': 82, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 1480, 'count': 33, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 2100, 'count': 31, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 330, 'count': 73, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 800, 'count': 66, 'date': 1664496000000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 620, 'count': 21, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 2400, 'count': 53, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 700, 'count': 51, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 520, 'count': 243, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 1400, 'count': 41, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 400, 'count': 71, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 1100, 'count': 22, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 500, 'count': 34, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 100, 'count': 23, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 5100, 'count': 44, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
+  ];
+
+  static const List<Map<String, dynamic>> dataDaily = [
+    {'cost': 6300, 'count': 531, 'date': 1668729600000, 'dateKind': 'daily', 'type': 'all'},
+    {'cost': 1480, 'count': 561, 'date': 1668729600000, 'dateKind': 'daily', 'type': 'all'},
+    {'cost': 2100, 'count': 341, 'date': 1668729600000, 'dateKind': 'daily', 'type': 'all'},
+    {'cost': 330, 'count': 651, 'date': 1668729600000, 'dateKind': 'daily', 'type': 'all'},
+    {'cost': 800, 'count': 171, 'date': 1664496000000, 'dateKind': 'daily', 'type': 'all'},
+    {'cost': 620, 'count': 169, 'date': 1668729600000, 'dateKind': 'daily', 'type': 'all'},
+    {'cost': 2400, 'count': 341, 'date': 1668729600000, 'dateKind': 'daily', 'type': 'all'},
+    {'cost': 700, 'count': 211, 'date': 1668729600000, 'dateKind': 'daily', 'type': 'all'},
+    {'cost': 520, 'count': 81, 'date': 1668729600000, 'dateKind': 'daily', 'type': 'all'},
+    {'cost': 1400, 'count': 351, 'date': 1668729600000, 'dateKind': 'daily', 'type': 'all'},
+    {'cost': 400, 'count': 331, 'date': 1668729600000, 'dateKind': 'daily', 'type': 'all'},
+    {'cost': 1100, 'count': 81, 'date': 1668729600000, 'dateKind': 'daily', 'type': 'all'},
+    {'cost': 500, 'count': 71, 'date': 1668729600000, 'dateKind': 'daily', 'type': 'all'},
+    {'cost': 100, 'count': 91, 'date': 1668729600000, 'dateKind': 'daily', 'type': 'all'},
+    {'cost': 5100, 'count': 51, 'date': 1668729600000, 'dateKind': 'daily', 'type': 'all'},
+  ];
+
+  static const List<Map<String, dynamic>> dataMonthly = [
+    {'cost': 6300, 'count': 51, 'date': 1668729600000, 'dateKind': 'monthly', 'type': 'all'},
+    {'cost': 1480, 'count': 41, 'date': 1668729600000, 'dateKind': 'monthly', 'type': 'all'},
+    {'cost': 2100, 'count': 31, 'date': 1668729600000, 'dateKind': 'monthly', 'type': 'all'},
+    {'cost': 330, 'count': 231, 'date': 1668729600000, 'dateKind': 'monthly', 'type': 'all'},
+    {'cost': 800, 'count': 51, 'date': 1664496000000, 'dateKind': 'monthly', 'type': 'all'},
+    {'cost': 620, 'count': 111, 'date': 1668729600000, 'dateKind': 'monthly', 'type': 'all'},
+    {'cost': 2400, 'count': 34, 'date': 1668729600000, 'dateKind': 'monthly', 'type': 'all'},
+    {'cost': 700, 'count': 135, 'date': 1668729600000, 'dateKind': 'monthly', 'type': 'all'},
+    {'cost': 520, 'count': 41, 'date': 1668729600000, 'dateKind': 'monthly', 'type': 'all'},
+    {'cost': 1400, 'count': 71, 'date': 1668729600000, 'dateKind': 'monthly', 'type': 'all'},
+    {'cost': 400, 'count': 19, 'date': 1668729600000, 'dateKind': 'monthly', 'type': 'all'},
+    {'cost': 1100, 'count': 61, 'date': 1668729600000, 'dateKind': 'monthly', 'type': 'all'},
+    {'cost': 500, 'count': 51, 'date': 1668729600000, 'dateKind': 'monthly', 'type': 'all'},
+    {'cost': 100, 'count': 81, 'date': 1668729600000, 'dateKind': 'monthly', 'type': 'all'},
+    {'cost': 5100, 'count': 91, 'date': 1668729600000, 'dateKind': 'monthly', 'type': 'all'},
+  ];
+}
+
 class CallChart {
   // 기간: 오늘, 구분: 통화수[건]
   static const Map<String, Map<String, dynamic>> todayNumber = {

@@ -32,8 +32,8 @@ class _TestState extends State<Test> {
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-    print(width);
-    print(1);
+    // print(width);
+    // print(1);
     return Column(
       children: [
         AspectRatio(
