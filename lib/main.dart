@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chart/bar_line/bar_line_chart.dart';
 import 'package:flutter_chart/media_query_layout.dart';
 
-import 'dense_bar_chart.dart';
+import 'bar_bar_chart.dart';
 import 'hi_chart.dart';
+import 'line_chart/line_chartt.dart';
 import 'month_call_amount.dart';
 import 'month_call_count.dart';
 import 'my_chart.dart';
@@ -44,16 +46,29 @@ class MyScreen extends StatelessWidget {
         // backgroundColor: Colors.teal,
         centerTitle: true,
       ),
-      // backgroundColor: Colors.black54,
+      backgroundColor: Colors.black54,
       body: ListView(
         padding: const EdgeInsets.all(24),
         children: const <Widget>[
           // ** PIE CHART **
           // PieChartSample2(), // 알츠윈매니저 - 캠페인상세
 
-          // ** BAR CHART **
-          DenseBarChart(), // 알츠윈매니저 - 사용정보
+          /////////////////////////////////////////////
+          // 알츠윈매니저 - 사용정보
+          // 1.막대그래프(비용) + 꺾은 선 그래프(횟수)
+          // BarLineChart(),
+          // SizedBox(height: 18),
+
+          // 3.BAR CHART: 비용, 횟수 모두 막대 그래프
+          BarBarChart(),
           SizedBox(height: 18),
+
+          // 2.꺾은 선 그래프 연습
+          // LineChartt(),
+          // SizedBox(height: 18),
+
+          /////////////////////////////////////////////
+
           Test(), // 센텐츠매니저 - 홈
           SizedBox(height: 18),
           TodayCallAmount(), // 2
