@@ -8,21 +8,25 @@ enum MediaQuerySizeType {
 }
 
 class MediaQueryLayout extends StatefulWidget {
-  const MediaQueryLayout({
-    super.key,
-    required this.screenS,
-    required this.screenM,
-    required this.screenL,
-    this.onChanged,
-  });
-
   final Widget Function() screenS; // 0 이상 512 이하
   final Widget Function() screenM; // 512 이상 1024 이하
   final Widget Function() screenL; // 1024 이상
   final void Function(MediaQuerySizeType type)? onChanged;
+  final double boundarySM; // S, M의 경계 길이
+  final double boundaryML; // M, L의 경계 길이
+
+  const MediaQueryLayout({
+    Key? key,
+    required this.screenS,
+    required this.screenM,
+    required this.screenL,
+    this.onChanged,
+    this.boundarySM = 768.0,
+    this.boundaryML = 1440.0,
+  }) : super(key: key);
 
   @override
-  State<MediaQueryLayout> createState() => _MediaQueryLayoutState();
+  _MediaQueryLayoutState createState() => _MediaQueryLayoutState();
 }
 
 class _MediaQueryLayoutState extends State<MediaQueryLayout> {
@@ -32,17 +36,17 @@ class _MediaQueryLayoutState extends State<MediaQueryLayout> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        final double width = MediaQuery.of(context).size.width;
+        double width = MediaQuery.of(context).size.width;
 
-        if (width >= 0.0 && width < 768.0) {
+        if (width >= 0.0 && width < widget.boundarySM) {
           _tryChanging(MediaQuerySizeType.s);
 
           return widget.screenS.call();
-        } else if (width >= 768.0 && width < 1440.0) {
+        } else if (width >= widget.boundarySM && width < widget.boundaryML) {
           _tryChanging(MediaQuerySizeType.m);
 
           return widget.screenM.call();
-        } else if (width >= 1440.0) {
+        } else if (width >= widget.boundaryML) {
           _tryChanging(MediaQuerySizeType.l);
 
           return widget.screenL.call();
@@ -54,7 +58,7 @@ class _MediaQueryLayoutState extends State<MediaQueryLayout> {
   }
 
   void _tryChanging(MediaQuerySizeType type) {
-    //debugPrint('_tryChanging(), $_mediaQuerySizeType, $type');
+    //print('_tryChanging(), $_mediaQuerySizeType, $type');
 
     if (_mediaQuerySizeType == type) {
       return;

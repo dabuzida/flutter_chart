@@ -38,40 +38,55 @@ class _TestState extends State<Test> {
       children: [
         AspectRatio(
           aspectRatio: 1.66,
-          child: BarChart(
-            key: UniqueKey(),
-            BarChartData(
-              maxY: _yAxisMax,
-              barTouchData: BarTouchData(
-                enabled: false,
-              ),
-              barGroups: getData(),
-              titlesData: FlTitlesData(
-                show: true,
-                topTitles: AxisTitles(
-                  axisNameWidget: const Text(
-                    'XXXXXXXXXXXXXXXXXXXX',
-                  ),
-                  axisNameSize: 60,
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    reservedSize: 58,
-
-                    // getTitlesWidget: _makeXAxisMarking(size: 's'),
-                  ),
+          child: Container(
+            color: Colors.white,
+            child: BarChart(
+              key: UniqueKey(),
+              BarChartData(
+                maxY: _yAxisMax,
+                barTouchData: BarTouchData(
+                  enabled: false,
                 ),
-                bottomTitles: AxisTitles(
-                  axisNameWidget: Text(
-                    'X-AXIS title',
-                    style: TextStyle(
-                      color: Colors.yellow,
+                barGroups: getData(),
+                titlesData: FlTitlesData(
+                  show: true,
+                  topTitles: AxisTitles(
+                    axisNameWidget: const Text(
+                      'XXXXXXXXXXXXXXXXXXXX',
+                    ),
+                    axisNameSize: 60,
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 58,
+
+                      // getTitlesWidget: _makeXAxisMarking(size: 's'),
                     ),
                   ),
-                  axisNameSize: 60,
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    reservedSize: 58,
-                    // getTitlesWidget: _makeXAxisMarking(size: 's'),
+                  rightTitles: AxisTitles(
+                    axisNameWidget: const Text(
+                      'tttttttttt',
+                    ),
+                    axisNameSize: 60,
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 58,
+
+                      // getTitlesWidget: _makeXAxisMarking(size: 's'),
+                    ),
+                  ),
+                  bottomTitles: AxisTitles(
+                    axisNameWidget: Text(
+                      'X-AXIS title',
+                      style: TextStyle(
+                        color: Colors.yellow,
+                      ),
+                    ),
+                    axisNameSize: 60,
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 58,
+                      // getTitlesWidget: _makeXAxisMarking(size: 's'),
+                    ),
                   ),
                 ),
               ),

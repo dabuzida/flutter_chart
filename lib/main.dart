@@ -37,7 +37,6 @@ class MyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Chart, package: fl_chart'),
@@ -46,7 +45,10 @@ class MyScreen extends StatelessWidget {
         // backgroundColor: Colors.teal,
         centerTitle: true,
       ),
-      backgroundColor: Colors.black54,
+      backgroundColor: Colors.grey.shade300,
+      body: const BarBarChart(),
+
+/* 
       body: ListView(
         padding: const EdgeInsets.all(24),
         children: const <Widget>[
@@ -60,8 +62,8 @@ class MyScreen extends StatelessWidget {
           // SizedBox(height: 18),
 
           // 3.BAR CHART: 비용, 횟수 모두 막대 그래프
-          BarBarChart(),
-          SizedBox(height: 18),
+          // BarBarChart(),
+          // SizedBox(height: 18),
 
           // 2.꺾은 선 그래프 연습
           // LineChartt(),
@@ -82,6 +84,7 @@ class MyScreen extends StatelessWidget {
           MyChart(),
         ],
       ),
+ */
     );
   }
 }

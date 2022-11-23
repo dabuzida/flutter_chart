@@ -4,6 +4,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chart/data.dart';
 
+import 'media_query_layout.dart';
+
 class BarBarChart extends StatefulWidget {
   const BarBarChart({super.key});
 
@@ -12,26 +14,60 @@ class BarBarChart extends StatefulWidget {
 }
 
 class _BarBarChartState extends State<BarBarChart> {
+  final ScrollController _scrollController = ScrollController();
+
   final List _dataList = UsageInfo.dataHourly;
   // final List _dataList = UsageInfo.dataDaily;
   // final List _dataList = UsageInfo.dataMonthly;
-  late String _currentScreenSize;
   String _title = '';
   String _xAxisTitle = '';
   final String _yAxisLeftTitle = '총비용';
   final String _yAxisRightTitle = '횟수';
 
-  final Color _colorCost = Color(0xFF4F81BD);
-  final Color _colorCount = Color(0xFFC0504D);
+  final Color _colorCost = const Color(0xFF4F81BD);
+  final Color _colorCount = const Color(0xFFC0504D);
   final Color _colorAxis = Colors.grey.shade400;
 
-  final double _barWidth = 3;
+  bool _isCostVisible = true;
+  bool _isCountVisible = true;
 
-  // late double _barsSpace;
-  double _barsSpace = 7;
-  // double _barsSpace = 15;
+  // cost차트 고유 속성
   late double _maxYCost;
+  // count차트 고유 속성
   late double _maxYCount;
+
+  // cost차트, count차트 공통 속성 (Stack으로 겹치기 때문에 수치 통일 해야함)
+  double _topNameSize = 40;
+  double _topReservedSize = 30;
+  double _leftNameSize = 0;
+  double _leftReservedSize = 60;
+  double _rightNameSize = 20;
+  double _rightReservedSize = 40;
+  double _bottomNameSize = 20;
+  double _bottomReservedSize = 100;
+
+  // late로 선언하여 렌더링 전, 브라우저 폭 감지후 매번 갱신 하는 속성
+  late double _barWidth;
+  late double _barsSpace;
+
+  void _setBarsSpace() {
+    // 브라우저 폭 변경될 때마다 갱신
+    final double currentWidth = MediaQuery.of(context).size.width;
+    if (1500 <= currentWidth) {
+      _barWidth = 5;
+      _barsSpace = 20;
+    } else if (1250 <= currentWidth && currentWidth < 1500) {
+      _barWidth = 3;
+      _barsSpace = 12;
+    } else if (700 <= currentWidth && currentWidth < 1250) {
+      _barWidth = 4;
+      _barsSpace = 17;
+    } else {
+      _barWidth = 1;
+      _barsSpace = 8;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -44,6 +80,7 @@ class _BarBarChartState extends State<BarBarChart> {
   }
 
   void _setChartSetting() {
+    // 서버에서 데이터 받아올때마다 갱신
     double maxY = 0;
     double maxY2 = 0;
     for (int i = 0; i < _dataList.length; i++) {
@@ -61,38 +98,142 @@ class _BarBarChartState extends State<BarBarChart> {
     _maxYCount = maxY2;
   }
 
-  void _setBarsSpace(BuildContext context) {
-    final double currentWidth = MediaQuery.of(context).size.width;
-    if (1000 < currentWidth) {
-      _barsSpace = 5;
-    } else if (500 < currentWidth && currentWidth <= 1000) {
-      _barsSpace = 20;
-    } else {
-      _barsSpace = 50;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final double currentWidth = MediaQuery.of(context).size.width;
     print('build');
-    return Container(
-      color: Colors.white,
-      // color: Colors.grey.shade300,
-      padding: const EdgeInsets.all(20),
-      child: SizedBox(
-        width: double.infinity,
-        height: 800,
-        child: Stack(
-          children: <Widget>[
-            _barChartCost(), // 밑바탕
-            _barChartCount(), // 덮어씀
-          ],
-        ),
-      ),
+    print('현재 브라우저 폭: $currentWidth');
+    _setBarsSpace();
+    return MediaQueryLayout(
+      boundarySM: 1300.0,
+      screenS: () {
+        print('s');
+        return _chartS();
+      },
+      screenM: () {
+        print('m');
+        return _chartML();
+      },
+      screenL: () {
+        print('l');
+        return _chartML();
+      },
     );
   }
 
-  BarChart _barChartCost() {
+  Widget _chartS() {
+    return ListView(
+      controller: _scrollController,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: <Widget>[
+              Container(width: double.infinity, height: 5, color: Colors.teal),
+              const SizedBox(height: 16),
+              Container(
+                color: Colors.white,
+                height: 770,
+                child: _stack(),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _chartML() {
+    return ListView(
+      controller: _scrollController,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: <Widget>[
+              Container(width: 720, height: 100, color: Colors.teal),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Container(
+                  color: Colors.white,
+                  height: 770,
+                  child: _stack(),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _stack() {
+    return Stack(
+      alignment: AlignmentDirectional.topEnd,
+      children: <Widget>[
+        _leftCostChart(), // 밑바탕
+        _rightCountChart(), // 덮어씀
+        Container(
+          width: 130,
+          height: 50,
+          // color: Colors.red.shade100,
+          child: Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  if (!(_isCostVisible && !_isCountVisible)) {
+                    _isCostVisible = !_isCostVisible;
+                    setState(() {});
+                  }
+                },
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: Row(
+                    children: <Widget>[
+                      _isCostVisible
+                          ? const Icon(
+                              Icons.check_box_outlined,
+                            )
+                          : const Icon(
+                              Icons.check_box_outline_blank_outlined,
+                            ),
+                      Text('비용', style: TextStyle(color: _colorCost)),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              GestureDetector(
+                onTap: () {
+                  if (!(!_isCostVisible && _isCountVisible)) {
+                    _isCountVisible = !_isCountVisible;
+                    setState(() {});
+                  }
+                },
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: Row(
+                    children: <Widget>[
+                      _isCountVisible
+                          ? const Icon(
+                              Icons.check_box_outlined,
+                            )
+                          : const Icon(
+                              Icons.check_box_outline_blank_outlined,
+                            ),
+                      Text('횟수', style: TextStyle(color: _colorCount)),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  BarChart _leftCostChart() {
     return BarChart(
       key: UniqueKey(),
       BarChartData(
@@ -101,7 +242,6 @@ class _BarBarChartState extends State<BarBarChart> {
           enabled: false,
           touchTooltipData: BarTouchTooltipData(
             direction: TooltipDirection.top,
-            // direction: TooltipDirection.top,
             tooltipBgColor: Colors.transparent,
             tooltipMargin: 0,
             getTooltipItem: (
@@ -130,7 +270,7 @@ class _BarBarChartState extends State<BarBarChart> {
           rightTitles: _getCostRightTitles(),
           bottomTitles: _getCostBottomTitles(),
         ),
-        gridData: FlGridData(show: false, drawVerticalLine: false),
+        gridData: FlGridData(show: false),
         borderData: FlBorderData(
           show: true,
           border: Border(
@@ -139,12 +279,12 @@ class _BarBarChartState extends State<BarBarChart> {
             bottom: BorderSide(color: _colorAxis),
           ),
         ),
-        barGroups: _getCostBars(),
+        barGroups: _isCostVisible ? _getCostBars() : null,
       ),
     );
   }
 
-  BarChart _barChartCount() {
+  BarChart _rightCountChart() {
     return BarChart(
       key: UniqueKey(),
       BarChartData(
@@ -182,7 +322,7 @@ class _BarBarChartState extends State<BarBarChart> {
           rightTitles: _getCountRightTitles(),
           bottomTitles: _getCountBottomTitles(),
         ),
-        gridData: FlGridData(show: false, drawVerticalLine: false),
+        gridData: FlGridData(show: false),
         borderData: FlBorderData(
           show: true,
           border: Border(
@@ -191,105 +331,12 @@ class _BarBarChartState extends State<BarBarChart> {
             bottom: const BorderSide(color: Colors.transparent),
           ),
         ),
-        barGroups: _getCountBars(),
+        barGroups: _isCountVisible ? _getCountBars() : null,
       ),
     );
   }
 
-  //cost
-  AxisTitles _getCostTopTitles() {
-    return AxisTitles(
-      axisNameWidget: Text('SAAS 차감내역 차트'),
-      axisNameSize: 40,
-      sideTitles: SideTitles(
-        showTitles: true,
-        reservedSize: 30,
-        getTitlesWidget: (value, meta) => SideTitleWidget(
-          axisSide: meta.axisSide,
-          child: Text(''),
-        ),
-      ),
-    );
-  }
-
-  AxisTitles _getCostLeftTitles() {
-    return AxisTitles(
-      axisNameWidget: RotatedBox(
-        quarterTurns: 45,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('총', style: TextStyle(color: _colorCost)),
-            Text('비', style: TextStyle(color: _colorCost)),
-            Text('용', style: TextStyle(color: _colorCost)),
-          ],
-        ),
-      ),
-      axisNameSize: 0,
-      sideTitles: SideTitles(
-        showTitles: true,
-        reservedSize: 60,
-        interval: 1000,
-        getTitlesWidget: (value, meta) => SideTitleWidget(
-          axisSide: meta.axisSide,
-          child: Text(
-            meta.formattedValue,
-            style: TextStyle(color: _colorCost),
-          ),
-        ),
-      ),
-    );
-  }
-
-  AxisTitles _getCostRightTitles() {
-    return AxisTitles(
-      axisNameWidget: RotatedBox(
-        quarterTurns: 45,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(''),
-          ],
-        ),
-      ),
-      axisNameSize: 0,
-      sideTitles: SideTitles(
-        showTitles: true,
-        reservedSize: 40,
-        // interval: 50,
-        getTitlesWidget: (value, meta) => SideTitleWidget(
-          axisSide: meta.axisSide,
-          child: Text(
-            '',
-          ),
-        ),
-      ),
-    );
-  }
-
-  AxisTitles _getCostBottomTitles() {
-    return AxisTitles(
-      axisNameWidget: Column(
-        children: <Widget>[
-          Text('날짜'),
-        ],
-      ),
-      axisNameSize: 40,
-      sideTitles: SideTitles(
-        showTitles: true,
-        reservedSize: 40,
-        getTitlesWidget: (double value, TitleMeta meta) {
-          return SideTitleWidget(
-            axisSide: meta.axisSide,
-            child: Text(
-              meta.formattedValue,
-            ),
-          );
-        },
-      ),
-    );
-  }
-
+  // 11111
   List<BarChartGroupData> _getCostBars() {
     final List<BarChartGroupData> barList = [];
 
@@ -310,95 +357,111 @@ class _BarBarChartState extends State<BarBarChart> {
     return barList;
   }
 
-// count
-  AxisTitles _getCountTopTitles() {
+  AxisTitles _getCostTopTitles() {
     return AxisTitles(
-      axisNameWidget: Text(''),
-      axisNameSize: 40,
+      axisNameWidget: const Text('SAAS 차감내역 차트'),
+      axisNameSize: _topNameSize,
       sideTitles: SideTitles(
         showTitles: true,
-        reservedSize: 30,
+        reservedSize: _topReservedSize,
         getTitlesWidget: (value, meta) => SideTitleWidget(
           axisSide: meta.axisSide,
-          child: Text(''),
+          child: const Text(''),
         ),
       ),
     );
   }
 
-  AxisTitles _getCountLeftTitles() {
+  AxisTitles _getCostLeftTitles() {
     return AxisTitles(
       axisNameWidget: RotatedBox(
         quarterTurns: 45,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(''),
+            // Text('총', style: TextStyle(color: _colorCost)),
+            Text('비', style: TextStyle(color: _colorCost)),
+            Text('용', style: TextStyle(color: _colorCost)),
           ],
         ),
       ),
-      axisNameSize: 0,
+      axisNameSize: _leftNameSize,
       sideTitles: SideTitles(
         showTitles: true,
-        reservedSize: 60,
-        interval: 100001,
-        getTitlesWidget: (value, meta) => SideTitleWidget(
-          axisSide: meta.axisSide,
-          child: Text(''),
-        ),
-      ),
-    );
-  }
-
-  AxisTitles _getCountRightTitles() {
-    return AxisTitles(
-      axisNameWidget: RotatedBox(
-        quarterTurns: 45,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('횟', style: TextStyle(color: _colorCount)),
-            Text('수', style: TextStyle(color: _colorCount)),
-          ],
-        ),
-      ),
-      axisNameSize: 0,
-      sideTitles: SideTitles(
-        showTitles: true,
-        reservedSize: 40,
-        interval: 50,
+        reservedSize: _leftReservedSize,
+        interval: 1000,
         getTitlesWidget: (value, meta) => SideTitleWidget(
           axisSide: meta.axisSide,
           child: Text(
             meta.formattedValue,
-            style: TextStyle(color: _colorCount),
+            style: TextStyle(color: _colorCost),
           ),
         ),
       ),
     );
   }
 
-  AxisTitles _getCountBottomTitles() {
+  AxisTitles _getCostRightTitles() {
+    return AxisTitles(
+      axisNameWidget: RotatedBox(
+        quarterTurns: 45,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(''),
+          ],
+        ),
+      ),
+      axisNameSize: _rightNameSize,
+      sideTitles: SideTitles(
+        showTitles: true,
+        reservedSize: _rightReservedSize,
+        // interval: 50,
+        getTitlesWidget: (value, meta) => SideTitleWidget(
+          axisSide: meta.axisSide,
+          child: const Text(
+            '',
+          ),
+        ),
+      ),
+    );
+  }
+
+  AxisTitles _getCostBottomTitles() {
     return AxisTitles(
       axisNameWidget: Column(
         children: <Widget>[
-          Text(''),
+          const Text('날짜'),
         ],
       ),
-      axisNameSize: 40,
+      axisNameSize: _bottomNameSize,
       sideTitles: SideTitles(
         showTitles: true,
-        reservedSize: 40,
+        reservedSize: _bottomReservedSize,
         getTitlesWidget: (double value, TitleMeta meta) {
           return SideTitleWidget(
             axisSide: meta.axisSide,
-            child: Text(''),
+            // child: Text(
+            //   meta.formattedValue,
+            // ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Text('10', style: TextStyle(fontSize: 10)),
+                const Text('~', style: TextStyle(fontSize: 7)),
+                const Text('11', style: TextStyle(fontSize: 10)),
+                const Text("'22", style: TextStyle(fontSize: 10)),
+                const Text('.10', style: TextStyle(fontSize: 10)),
+                const Text('.14', style: TextStyle(fontSize: 10)),
+              ],
+            ),
           );
         },
       ),
     );
   }
 
+  // 22222
   List<BarChartGroupData> _getCountBars() {
     final List<BarChartGroupData> barList = [];
 
@@ -417,5 +480,93 @@ class _BarBarChartState extends State<BarBarChart> {
       );
     }
     return barList;
+  }
+
+  AxisTitles _getCountTopTitles() {
+    return AxisTitles(
+      axisNameWidget: const Text(''),
+      axisNameSize: _topNameSize,
+      sideTitles: SideTitles(
+        showTitles: true,
+        reservedSize: _topReservedSize,
+        getTitlesWidget: (value, meta) => SideTitleWidget(
+          axisSide: meta.axisSide,
+          child: const Text(''),
+        ),
+      ),
+    );
+  }
+
+  AxisTitles _getCountLeftTitles() {
+    return AxisTitles(
+      axisNameWidget: RotatedBox(
+        quarterTurns: 45,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(''),
+          ],
+        ),
+      ),
+      axisNameSize: _leftNameSize,
+      sideTitles: SideTitles(
+        showTitles: true,
+        reservedSize: _leftReservedSize,
+        interval: 100001,
+        getTitlesWidget: (value, meta) => SideTitleWidget(
+          axisSide: meta.axisSide,
+          child: const Text(''),
+        ),
+      ),
+    );
+  }
+
+  AxisTitles _getCountRightTitles() {
+    return AxisTitles(
+      axisNameWidget: RotatedBox(
+        quarterTurns: 45,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('횟', style: TextStyle(color: _colorCount)),
+            Text('수', style: TextStyle(color: _colorCount)),
+          ],
+        ),
+      ),
+      axisNameSize: _rightNameSize,
+      sideTitles: SideTitles(
+        showTitles: true,
+        reservedSize: _rightReservedSize,
+        interval: 50,
+        getTitlesWidget: (value, meta) => SideTitleWidget(
+          axisSide: meta.axisSide,
+          child: Text(
+            meta.formattedValue,
+            style: TextStyle(color: _colorCount),
+          ),
+        ),
+      ),
+    );
+  }
+
+  AxisTitles _getCountBottomTitles() {
+    return AxisTitles(
+      axisNameWidget: Column(
+        children: <Widget>[
+          const Text(''),
+        ],
+      ),
+      axisNameSize: _bottomNameSize,
+      sideTitles: SideTitles(
+        showTitles: true,
+        reservedSize: _bottomReservedSize,
+        getTitlesWidget: (double value, TitleMeta meta) {
+          return SideTitleWidget(
+            axisSide: meta.axisSide,
+            child: const Text(''),
+          );
+        },
+      ),
+    );
   }
 }
