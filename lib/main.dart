@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chart/bar_line/bar_line_chart.dart';
 import 'package:flutter_chart/media_query_layout.dart';
+import 'package:flutter_chart/test2.dart';
 
 import 'bar_bar_chart.dart';
 import 'hi_chart.dart';
@@ -46,8 +47,11 @@ class MyScreen extends StatelessWidget {
         centerTitle: true,
       ),
       backgroundColor: Colors.grey.shade300,
+      // 1
       body: const BarBarChart(),
+      // body: Test2(),
 
+// 2
 /* 
       body: ListView(
         padding: const EdgeInsets.all(24),
@@ -71,6 +75,7 @@ class MyScreen extends StatelessWidget {
 
           /////////////////////////////////////////////
 
+          Test2(),
           Test(), // 센텐츠매니저 - 홈
           SizedBox(height: 18),
           TodayCallAmount(), // 2
@@ -83,8 +88,7 @@ class MyScreen extends StatelessWidget {
           HiChart(),
           MyChart(),
         ],
-      ),
- */
+      ), */
     );
   }
 }

@@ -52,6 +52,7 @@ class _BarBarChartState extends State<BarBarChart> {
 
   void _setBarsSpace() {
     // 브라우저 폭 변경될 때마다 갱신
+    print('_setBarsSpace');
     final double currentWidth = MediaQuery.of(context).size.width;
     if (1500 <= currentWidth) {
       _barWidth = 5;
@@ -100,9 +101,9 @@ class _BarBarChartState extends State<BarBarChart> {
 
   @override
   Widget build(BuildContext context) {
-    final double currentWidth = MediaQuery.of(context).size.width;
     print('build');
-    print('현재 브라우저 폭: $currentWidth');
+    // final double currentWidth = MediaQuery.of(context).size.width;
+    // print('현재 브라우저 폭: $currentWidth');
     _setBarsSpace();
     return MediaQueryLayout(
       boundarySM: 1300.0,
@@ -181,7 +182,7 @@ class _BarBarChartState extends State<BarBarChart> {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  if (!(_isCostVisible && !_isCountVisible)) {
+                  if (_isCountVisible) {
                     _isCostVisible = !_isCostVisible;
                     setState(() {});
                   }
@@ -205,7 +206,7 @@ class _BarBarChartState extends State<BarBarChart> {
               const SizedBox(width: 10),
               GestureDetector(
                 onTap: () {
-                  if (!(!_isCostVisible && _isCountVisible)) {
+                  if (_isCostVisible) {
                     _isCountVisible = !_isCountVisible;
                     setState(() {});
                   }
@@ -268,7 +269,7 @@ class _BarBarChartState extends State<BarBarChart> {
           topTitles: _getCostTopTitles(),
           leftTitles: _getCostLeftTitles(),
           rightTitles: _getCostRightTitles(),
-          bottomTitles: _getCostBottomTitles(),
+          bottomTitles: _getBottomTitles(),
         ),
         gridData: FlGridData(show: false),
         borderData: FlBorderData(
@@ -279,7 +280,7 @@ class _BarBarChartState extends State<BarBarChart> {
             bottom: BorderSide(color: _colorAxis),
           ),
         ),
-        barGroups: _isCostVisible ? _getCostBars() : null,
+        barGroups: _isCostVisible ? _getCostBars() : _getBars(),
       ),
     );
   }
@@ -293,7 +294,6 @@ class _BarBarChartState extends State<BarBarChart> {
           enabled: false,
           touchTooltipData: BarTouchTooltipData(
             direction: TooltipDirection.top,
-            // direction: TooltipDirection.top,
             tooltipBgColor: Colors.transparent,
             tooltipMargin: 0,
             getTooltipItem: (
@@ -320,7 +320,7 @@ class _BarBarChartState extends State<BarBarChart> {
           topTitles: _getCountTopTitles(),
           leftTitles: _getCountLeftTitles(),
           rightTitles: _getCountRightTitles(),
-          bottomTitles: _getCountBottomTitles(),
+          bottomTitles: _getBottomTitlesFrame(),
         ),
         gridData: FlGridData(show: false),
         borderData: FlBorderData(
@@ -328,12 +328,49 @@ class _BarBarChartState extends State<BarBarChart> {
           border: Border(
             left: const BorderSide(color: Colors.transparent, width: 0),
             right: BorderSide(color: _colorAxis),
-            bottom: const BorderSide(color: Colors.transparent),
+            bottom: const BorderSide(color: Colors.transparent, width: 0),
           ),
         ),
         barGroups: _isCountVisible ? _getCountBars() : null,
+        // barGroups: _isCountVisible ? _getCountBars() : _getBars(),
       ),
     );
+  }
+
+  List<BarChartGroupData> _getBars() {
+    final List<BarChartGroupData> barList = [];
+
+    for (int i = 0; i < _dataList.length; i++) {
+      barList.add(
+        BarChartGroupData(
+          x: i,
+          barsSpace: _barsSpace,
+          barRods: <BarChartRodData>[
+            BarChartRodData(toY: 0, width: _barWidth, borderRadius: BorderRadius.zero),
+            BarChartRodData(toY: 0, width: 0, borderRadius: BorderRadius.zero),
+          ],
+          showingTooltipIndicators: [],
+        ),
+      );
+    }
+    return barList;
+
+    // final List<BarChartGroupData> barList = [];
+
+    // for (int i = 0; i < _dataList.length; i++) {
+    //   barList.add(
+    //     BarChartGroupData(
+    //       x: i,
+    //       barsSpace: _barsSpace,
+    //       barRods: <BarChartRodData>[
+    //         BarChartRodData(toY: 0, width: 0, borderRadius: BorderRadius.zero),
+    //         BarChartRodData(toY: 0, width: 0, borderRadius: BorderRadius.zero),
+    //       ],
+    //       showingTooltipIndicators: [],
+    //     ),
+    //   );
+    // }
+    // return barList;
   }
 
   // 11111
@@ -344,7 +381,7 @@ class _BarBarChartState extends State<BarBarChart> {
       final aa = _dataList[i]['cost'];
       barList.add(
         BarChartGroupData(
-          x: 4,
+          x: i,
           barsSpace: _barsSpace,
           barRods: <BarChartRodData>[
             BarChartRodData(toY: aa, color: _colorCost, width: _barWidth, borderRadius: BorderRadius.zero),
@@ -427,11 +464,11 @@ class _BarBarChartState extends State<BarBarChart> {
     );
   }
 
-  AxisTitles _getCostBottomTitles() {
+  AxisTitles _getBottomTitles() {
     return AxisTitles(
       axisNameWidget: Column(
-        children: <Widget>[
-          const Text('날짜'),
+        children: const <Widget>[
+          Text('날짜'),
         ],
       ),
       axisNameSize: _bottomNameSize,
@@ -439,22 +476,55 @@ class _BarBarChartState extends State<BarBarChart> {
         showTitles: true,
         reservedSize: _bottomReservedSize,
         getTitlesWidget: (double value, TitleMeta meta) {
+          // return Container(width: 50, height: 50, color: Colors.red);
+          bool isSameDay = false;
+          // print(value);
+          // print(meta.formattedValue);
+          // x축 눈금 개수만큼 실행되어 x축 눈금 생성
+          // 2022-11-24 09:33:02.000
+          final int currentDataUnixTime = _dataList[value.toInt()]['date'];
+          final DateTime currentDataDateTime = DateTime.fromMillisecondsSinceEpoch(currentDataUnixTime);
+          final String currentDataDate = currentDataDateTime.toString();
+          final String currentDataYMD = currentDataDate.substring(0, 10);
+          // check same day
+          if (value.toInt() != 0) {
+            // YMD: year month day
+            final int previousDataUnixTime = _dataList[value.toInt() - 1]['date'];
+            final DateTime previousDataDateTime = DateTime.fromMillisecondsSinceEpoch(previousDataUnixTime);
+            final String previousDataDate = previousDataDateTime.toString();
+            final String previousDataYMD = previousDataDate.substring(0, 10);
+
+            // if (identical(previousDataDiscriminator , currentDataDiscriminator)) {
+            // if (previousDataDiscriminator.compareTo(currentDataDiscriminator) == 0) {
+            if (previousDataYMD == currentDataYMD) {
+              isSameDay = true;
+            }
+          }
+
+          final String year = currentDataDate.substring(2, 4);
+          // final String year = currentDataDate.substring(0, 4);
+          final String month = currentDataDate.substring(5, 7);
+          final String day = currentDataDate.substring(8, 10);
+          final String hourHead = currentDataDate.substring(11, 13);
+          String hourTail = (int.parse(hourHead) + 1).toString();
+          if (hourTail.length == 1) {
+            hourTail = '0$hourTail';
+          }
+
+          String date = '';
+          if (isSameDay) {
+            date = '                   $hourHead ~ $hourTail         ';
+          } else {
+            // '`$year.$month.$day $hourHead ~ $hourTail';
+            // '$month.$day $hourHead ~ $hourTail';
+            date = '`$year.$month.$day $hourHead ~ $hourTail         ';
+          }
+
           return SideTitleWidget(
+            // angle: 6,
+            angle: 12,
             axisSide: meta.axisSide,
-            // child: Text(
-            //   meta.formattedValue,
-            // ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const Text('10', style: TextStyle(fontSize: 10)),
-                const Text('~', style: TextStyle(fontSize: 7)),
-                const Text('11', style: TextStyle(fontSize: 10)),
-                const Text("'22", style: TextStyle(fontSize: 10)),
-                const Text('.10', style: TextStyle(fontSize: 10)),
-                const Text('.14', style: TextStyle(fontSize: 10)),
-              ],
-            ),
+            child: Text(date, style: const TextStyle(fontSize: 10)),
           );
         },
       ),
@@ -469,7 +539,7 @@ class _BarBarChartState extends State<BarBarChart> {
       final aa = _dataList[i]['count'];
       barList.add(
         BarChartGroupData(
-          x: 4,
+          x: i,
           barsSpace: _barsSpace,
           barRods: <BarChartRodData>[
             BarChartRodData(toY: 0, width: 0, borderRadius: BorderRadius.zero),
@@ -549,13 +619,9 @@ class _BarBarChartState extends State<BarBarChart> {
     );
   }
 
-  AxisTitles _getCountBottomTitles() {
+  AxisTitles _getBottomTitlesFrame() {
     return AxisTitles(
-      axisNameWidget: Column(
-        children: <Widget>[
-          const Text(''),
-        ],
-      ),
+      axisNameWidget: SizedBox(),
       axisNameSize: _bottomNameSize,
       sideTitles: SideTitles(
         showTitles: true,
@@ -563,7 +629,7 @@ class _BarBarChartState extends State<BarBarChart> {
         getTitlesWidget: (double value, TitleMeta meta) {
           return SideTitleWidget(
             axisSide: meta.axisSide,
-            child: const Text(''),
+            child: SizedBox(),
           );
         },
       ),

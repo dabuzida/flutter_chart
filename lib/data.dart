@@ -2,15 +2,19 @@ class UsageInfo {
   // 'all' | 'call_reach' | 'call_complete' | 'consent_reach' | 'consent_complete' | 'SMS' | 'LMS'
 
   static const List<Map<String, dynamic>> dataHourly = [
-    {'cost': 6300, 'count': 82, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
-    {'cost': 1480, 'count': 33, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
-    {'cost': 2100, 'count': 31, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
-    {'cost': 330, 'count': 73, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
-    {'cost': 800, 'count': 66, 'date': 1664496000000, 'dateKind': 'hourly', 'type': 'all'},
-    {'cost': 620, 'count': 21, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
-    {'cost': 2400, 'count': 53, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
-    {'cost': 700, 'count': 51, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
-    {'cost': 520, 'count': 243, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
+    //
+    {'cost': 6300, 'count': 82, 'date': 1669249982000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 1480, 'count': 33, 'date': 1669259982000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 2100, 'count': 31, 'date': 1669269982000, 'dateKind': 'hourly', 'type': 'all'},
+    //
+    {'cost': 330, 'count': 73, 'date': 1669349982000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 800, 'count': 66, 'date': 1669359982000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 620, 'count': 21, 'date': 1669369982000, 'dateKind': 'hourly', 'type': 'all'},
+    //
+    {'cost': 240, 'count': 53, 'date': 1669449982000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 700, 'count': 51, 'date': 1669459982000, 'dateKind': 'hourly', 'type': 'all'},
+    {'cost': 520, 'count': 24, 'date': 1669469982000, 'dateKind': 'hourly', 'type': 'all'},
+    //
     {'cost': 1400, 'count': 41, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
     {'cost': 400, 'count': 71, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
     {'cost': 1100, 'count': 22, 'date': 1668729600000, 'dateKind': 'hourly', 'type': 'all'},
