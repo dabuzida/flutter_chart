@@ -39,7 +39,7 @@ class _BarBarChartState extends State<BarBarChart> {
   // cost차트, count차트 공통 속성 (Stack으로 겹치기 때문에 수치 통일 해야함)
   double _topNameSize = 40;
   double _topReservedSize = 30;
-  double _leftNameSize = 0;
+  double _leftNameSize = 20;
   double _leftReservedSize = 60;
   double _rightNameSize = 20;
   double _rightReservedSize = 40;
@@ -69,17 +69,6 @@ class _BarBarChartState extends State<BarBarChart> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    // print(11111);
-    // for (int i = 0; i < 10000000000; i++) {}
-    // print(22222);
-    // for (int i = 0; i < 10000000000; i++) {}
-    // print(33333);
-    _setChartSetting();
-  }
-
   void _setChartSetting() {
     // 서버에서 데이터 받아올때마다 갱신
     double maxY = 0;
@@ -97,6 +86,17 @@ class _BarBarChartState extends State<BarBarChart> {
 
     _maxYCost = maxY;
     _maxYCount = maxY2;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // print(11111);
+    // for (int i = 0; i < 10000000000; i++) {}
+    // print(22222);
+    // for (int i = 0; i < 10000000000; i++) {}
+    // print(33333);
+    _setChartSetting();
   }
 
   @override
@@ -354,23 +354,6 @@ class _BarBarChartState extends State<BarBarChart> {
       );
     }
     return barList;
-
-    // final List<BarChartGroupData> barList = [];
-
-    // for (int i = 0; i < _dataList.length; i++) {
-    //   barList.add(
-    //     BarChartGroupData(
-    //       x: i,
-    //       barsSpace: _barsSpace,
-    //       barRods: <BarChartRodData>[
-    //         BarChartRodData(toY: 0, width: 0, borderRadius: BorderRadius.zero),
-    //         BarChartRodData(toY: 0, width: 0, borderRadius: BorderRadius.zero),
-    //       ],
-    //       showingTooltipIndicators: [],
-    //     ),
-    //   );
-    // }
-    // return barList;
   }
 
   // 11111
@@ -384,7 +367,7 @@ class _BarBarChartState extends State<BarBarChart> {
           x: i,
           barsSpace: _barsSpace,
           barRods: <BarChartRodData>[
-            BarChartRodData(toY: aa, color: _colorCost, width: _barWidth, borderRadius: BorderRadius.zero),
+            BarChartRodData(toY: aa, width: _barWidth, borderRadius: BorderRadius.zero, color: _colorCost),
             BarChartRodData(toY: 0, width: 0, borderRadius: BorderRadius.zero),
           ],
           showingTooltipIndicators: [0],
@@ -411,16 +394,15 @@ class _BarBarChartState extends State<BarBarChart> {
 
   AxisTitles _getCostLeftTitles() {
     return AxisTitles(
-      axisNameWidget: RotatedBox(
-        quarterTurns: 45,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Text('총', style: TextStyle(color: _colorCost)),
-            Text('비', style: TextStyle(color: _colorCost)),
-            Text('용', style: TextStyle(color: _colorCost)),
-          ],
-        ),
+      axisNameWidget: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const <Widget>[
+          Text('['),
+          RotatedBox(quarterTurns: 1, child: Text('원')),
+          Text(']'),
+          RotatedBox(quarterTurns: 1, child: Text('용')),
+          RotatedBox(quarterTurns: 1, child: Text('비')),
+        ],
       ),
       axisNameSize: _leftNameSize,
       sideTitles: SideTitles(
@@ -535,7 +517,8 @@ class _BarBarChartState extends State<BarBarChart> {
   List<BarChartGroupData> _getCountBars() {
     final List<BarChartGroupData> barList = [];
 
-    for (int i = 0; i < _dataList.length; i++) {
+    // for (int i = 0; i < _dataList.length; i++) {
+    for (int i = _dataList.length - 1; i > -1; i--) {
       final aa = _dataList[i]['count'];
       barList.add(
         BarChartGroupData(
@@ -543,7 +526,7 @@ class _BarBarChartState extends State<BarBarChart> {
           barsSpace: _barsSpace,
           barRods: <BarChartRodData>[
             BarChartRodData(toY: 0, width: 0, borderRadius: BorderRadius.zero),
-            BarChartRodData(toY: aa, color: _colorCount, width: _barWidth, borderRadius: BorderRadius.zero),
+            BarChartRodData(toY: aa, width: _barWidth, borderRadius: BorderRadius.zero, color: _colorCount),
           ],
           showingTooltipIndicators: [1],
         ),
