@@ -1,28 +1,20 @@
-import 'dart:math';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chart/data.dart';
 
-import 'media_query_layout.dart';
-
-class BarBarChart extends StatefulWidget {
-  const BarBarChart({super.key});
+class BarBarChart2 extends StatefulWidget {
+  const BarBarChart2({super.key});
 
   @override
-  State<BarBarChart> createState() => _BarBarChartState();
+  State<BarBarChart2> createState() => _BarBarChart2State();
 }
 
-class _BarBarChartState extends State<BarBarChart> {
+class _BarBarChart2State extends State<BarBarChart2> {
   final ScrollController _scrollController = ScrollController();
 
   final List _dataList = UsageInfo.dataHourly;
   // final List _dataList = UsageInfo.dataDaily;
   // final List _dataList = UsageInfo.dataMonthly;
-  String _title = '';
-  String _xAxisTitle = '';
-  final String _yAxisLeftTitle = '총비용';
-  final String _yAxisRightTitle = '횟수';
 
   final Color _colorCost = const Color(0xFF4F81BD);
   final Color _colorCount = const Color(0xFFC0504D);
@@ -52,13 +44,13 @@ class _BarBarChartState extends State<BarBarChart> {
 
   void _setBarsSpace() {
     // 브라우저 폭 변경될 때마다 갱신
-    print('_setBarsSpace');
     final double currentWidth = MediaQuery.of(context).size.width;
     if (1500 <= currentWidth) {
       _barWidth = 5;
       _barsSpace = 20;
     } else if (1250 <= currentWidth && currentWidth < 1500) {
-      _barWidth = 3;
+      // _barWidth = 3;
+      _barWidth = 15;
       _barsSpace = 12;
     } else if (700 <= currentWidth && currentWidth < 1250) {
       _barWidth = 4;
@@ -101,70 +93,14 @@ class _BarBarChartState extends State<BarBarChart> {
 
   @override
   Widget build(BuildContext context) {
-    print('build');
+    // print('build');
     // final double currentWidth = MediaQuery.of(context).size.width;
     // print('현재 브라우저 폭: $currentWidth');
     _setBarsSpace();
-    return MediaQueryLayout(
-      boundarySM: 1300.0,
-      screenS: () {
-        print('s');
-        return _chartS();
-      },
-      screenM: () {
-        print('m');
-        return _chartML();
-      },
-      screenL: () {
-        print('l');
-        return _chartML();
-      },
-    );
-  }
-
-  Widget _chartS() {
-    return ListView(
-      controller: _scrollController,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: <Widget>[
-              Container(width: double.infinity, height: 5, color: Colors.teal),
-              const SizedBox(height: 16),
-              Container(
-                color: Colors.white,
-                height: 770,
-                child: _stack(),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _chartML() {
-    return ListView(
-      controller: _scrollController,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: <Widget>[
-              Container(width: 720, height: 100, color: Colors.teal),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Container(
-                  color: Colors.white,
-                  height: 770,
-                  child: _stack(),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
+    return Container(
+      color: Colors.white,
+      height: 770,
+      child: _stack(),
     );
   }
 
@@ -173,63 +109,7 @@ class _BarBarChartState extends State<BarBarChart> {
       alignment: AlignmentDirectional.topEnd,
       children: <Widget>[
         _leftCostChart(), // 밑바탕
-        _rightCountChart(), // 덮어씀
-        Container(
-          width: 130,
-          height: 50,
-          // color: Colors.red.shade100,
-          child: Row(
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  if (_isCountVisible) {
-                    _isCostVisible = !_isCostVisible;
-                    setState(() {});
-                  }
-                },
-                child: MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: Row(
-                    children: <Widget>[
-                      _isCostVisible
-                          ? const Icon(
-                              Icons.check_box_outlined,
-                            )
-                          : const Icon(
-                              Icons.check_box_outline_blank_outlined,
-                            ),
-                      Text('비용', style: TextStyle(color: _colorCost)),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              GestureDetector(
-                onTap: () {
-                  if (_isCostVisible) {
-                    _isCountVisible = !_isCountVisible;
-                    setState(() {});
-                  }
-                },
-                child: MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: Row(
-                    children: <Widget>[
-                      _isCountVisible
-                          ? const Icon(
-                              Icons.check_box_outlined,
-                            )
-                          : const Icon(
-                              Icons.check_box_outline_blank_outlined,
-                            ),
-                      Text('횟수', style: TextStyle(color: _colorCount)),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        // _rightCountChart(), // 덮어씀
       ],
     );
   }
@@ -240,7 +120,80 @@ class _BarBarChartState extends State<BarBarChart> {
       BarChartData(
         maxY: _maxYCost,
         barTouchData: BarTouchData(
-          enabled: false,
+          enabled: true,
+          allowTouchBarBackDraw: true,
+          handleBuiltInTouches: false,
+          longPressDuration: Duration(seconds: 2),
+          // mouseCursorResolver: (FlTouchEvent p0, BarTouchResponse? p1) {
+          //   //
+          //   if (p0.isInterestedForInteractions) {
+          //     print(1);
+          //     return SystemMouseCursors.basic; // 기본커서
+          //   } else {
+          //     print(2);
+          //     return SystemMouseCursors.click; // 손가락 엄지 만 튀어나온거
+          //   }
+
+          //   // return SystemMouseCursors.click; // 손가락 엄지 만 튀어나온거
+          //   // return SystemMouseCursors.none; //안보이게해줌
+          //   return SystemMouseCursors.basic; // 기본커서
+          // },
+          // touchCallback: (FlTouchEvent p0, BarTouchResponse? p1) {
+          touchCallback: (FlTouchEvent event, barTouchResponse) {
+            // if (p0.isInterestedForInteractions) {
+            //   print(1);
+            // } else {
+            //   print(2);
+            // }
+
+            // setState(() {
+            //   if (!event.isInterestedForInteractions || barTouchResponse == null || barTouchResponse.spot == null) {
+            //     print(1);
+            //     return;
+            //   }
+            //   print(2);
+            // });
+
+            //#
+            // if (!event.isInterestedForInteractions || barTouchResponse == null || barTouchResponse.spot == null) {
+            //   print(1);
+            //   return;
+            // }
+            // print(2);
+
+            //
+            // if (!event.isInterestedForInteractions || barTouchResponse == null || barTouchResponse.spot == null) {}
+            // if (event.isInterestedForInteractions) {
+            //   print(1);
+            // } else {
+            //   print(2);
+            // }
+
+            // if (barTouchResponse == null) {
+            //   print(3);
+            // } else {
+            //   print(4);
+            // }
+
+            // if (barTouchResponse != null && barTouchResponse.spot == null) {
+            //   print(5);
+            // } else if (barTouchResponse != null && barTouchResponse.spot != null) {
+            //   print(6);
+            // }
+
+            // if (event.isInterestedForInteractions && barTouchResponse?.spot != null) {
+            //   print(1);
+            //   return;
+            // }
+
+            if (barTouchResponse?.spot != null) {
+              print(1);
+              return;
+            }
+
+            // print(2);
+          },
+          // touchExtraThreshold: ,
           touchTooltipData: BarTouchTooltipData(
             direction: TooltipDirection.top,
             // tooltipBgColor: Colors.transparent,
@@ -252,10 +205,18 @@ class _BarBarChartState extends State<BarBarChart> {
               BarChartRodData rod,
               int rodIndex,
             ) {
+              if (groupIndex % 2 == 0) {
+                return BarTooltipItem(
+                  '',
+                  TextStyle(
+                    color: _colorCost,
+                    fontSize: 13.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              }
               return BarTooltipItem(
                 '${_dataList[groupIndex]['cost']}',
-                // '${rod.toY.toString()}(${_dataList[groupIndex]['count']})',
-                // '${rod.toY.toString()}원\n${_dataList[groupIndex]['count']}회',
                 TextStyle(
                   color: _colorCost,
                   fontSize: 13.0,
@@ -270,7 +231,7 @@ class _BarBarChartState extends State<BarBarChart> {
           topTitles: _getCostTopTitles(),
           leftTitles: _getCostLeftTitles(),
           rightTitles: _getCostRightTitles(),
-          bottomTitles: _getBottomTitles(),
+          bottomTitles: _getBottomTitles(), //TODO
         ),
         gridData: FlGridData(show: false),
         borderData: FlBorderData(
@@ -281,60 +242,7 @@ class _BarBarChartState extends State<BarBarChart> {
             bottom: BorderSide(color: _colorAxis),
           ),
         ),
-        barGroups: _isCostVisible ? _getCostBars() : _getBars(),
-      ),
-    );
-  }
-
-  BarChart _rightCountChart() {
-    return BarChart(
-      key: UniqueKey(),
-      BarChartData(
-        maxY: _maxYCount,
-        barTouchData: BarTouchData(
-          enabled: false,
-          touchTooltipData: BarTouchTooltipData(
-            direction: TooltipDirection.top,
-            // tooltipBgColor: Colors.transparent,
-
-            tooltipMargin: 0,
-            getTooltipItem: (
-              BarChartGroupData group,
-              int groupIndex,
-              BarChartRodData rod,
-              int rodIndex,
-            ) {
-              return BarTooltipItem(
-                '${_dataList[groupIndex]['count']}',
-                // '${rod.toY.toString()}(${_dataList[groupIndex]['count']})',
-                // '${rod.toY.toString()}원\n${_dataList[groupIndex]['count']}회',
-                TextStyle(
-                  color: _colorCount,
-                  fontSize: 13.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              );
-            },
-          ),
-        ),
-        titlesData: FlTitlesData(
-          show: true,
-          topTitles: _getCountTopTitles(),
-          leftTitles: _getCountLeftTitles(),
-          rightTitles: _getCountRightTitles(),
-          bottomTitles: _getBottomTitlesFrame(),
-        ),
-        gridData: FlGridData(show: false),
-        borderData: FlBorderData(
-          show: true,
-          border: Border(
-            left: const BorderSide(color: Colors.transparent, width: 0),
-            right: BorderSide(color: _colorAxis),
-            bottom: const BorderSide(color: Colors.transparent, width: 0),
-          ),
-        ),
-        barGroups: _isCountVisible ? _getCountBars() : null,
-        // barGroups: _isCountVisible ? _getCountBars() : _getBars(),
+        barGroups: _isCostVisible ? _getCostBars() : _getBars(), //TODO
       ),
     );
   }

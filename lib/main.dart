@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chart/bar_bar_chart2.dart';
 import 'package:flutter_chart/bar_line/bar_line_chart.dart';
 import 'package:flutter_chart/media_query_layout.dart';
 import 'package:flutter_chart/test2.dart';
@@ -47,8 +48,10 @@ class MyScreen extends StatelessWidget {
         centerTitle: true,
       ),
       backgroundColor: Colors.grey.shade300,
+
       // 1
-      body: const BarBarChart(),
+      body: const BarBarChart2(),
+      // body: const BarBarChart(),
       // body: Test2(),
 
 // 2

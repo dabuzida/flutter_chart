@@ -175,7 +175,7 @@ class _TodayCallCountState extends State<TodayCallCount> {
                       ),
                     );
                   },
-                  tooltipBgColor: Colors.transparent,
+                  // tooltipBgColor: Colors.transparent,
                   tooltipMargin: 1,
                 ),
               ),

@@ -116,7 +116,7 @@ class _HiChartState extends State<HiChart> {
                       ),
                     );
                   },
-                  tooltipBgColor: const Color.fromARGB(0, 81, 116, 82),
+                  // tooltipBgColor: const Color.fromARGB(0, 81, 116, 82),
                   // tooltipBorder: BorderSide(width: 1),
                   // maxContentWidth: 50,
                   tooltipMargin: 3,
@@ -266,7 +266,7 @@ class _HiChartState extends State<HiChart> {
               borderSide: const BorderSide(
                 width: 0,
                 // style: BorderStyle.,
-                strokeAlign: StrokeAlign.center,
+                // strokeAlign: StrokeAlign.center,
               ),
               // color: Colors.amber,
               // color: Colors.white,

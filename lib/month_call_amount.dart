@@ -183,7 +183,7 @@ class _MonthCallAmountState extends State<MonthCallAmount> {
                           ),
                         );
                       },
-                      tooltipBgColor: Colors.transparent,
+                      // tooltipBgColor: Colors.transparent,
                       tooltipMargin: 1,
                     ),
                   ),

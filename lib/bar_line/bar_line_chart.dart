@@ -75,7 +75,7 @@ class _BarLineChartState extends State<BarLineChart> {
           touchTooltipData: BarTouchTooltipData(
             direction: TooltipDirection.top,
             // direction: TooltipDirection.top,
-            tooltipBgColor: Colors.transparent,
+            // tooltipBgColor: Colors.transparent,
             tooltipMargin: 0,
             getTooltipItem: (
               BarChartGroupData group,
@@ -130,7 +130,7 @@ class _BarLineChartState extends State<BarLineChart> {
           touchTooltipData: BarTouchTooltipData(
             direction: TooltipDirection.top,
             // direction: TooltipDirection.top,
-            tooltipBgColor: Colors.transparent,
+            // tooltipBgColor: Colors.transparent,
             tooltipMargin: 0,
             getTooltipItem: (
               BarChartGroupData group,

@@ -29,8 +29,8 @@ class LineChartt extends StatelessWidget {
   LineTouchData get lineTouchData1 => LineTouchData(
         handleBuiltInTouches: true,
         touchTooltipData: LineTouchTooltipData(
-          tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
-        ),
+            // tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
+            ),
       );
 
   FlTitlesData get titlesData1 => FlTitlesData(

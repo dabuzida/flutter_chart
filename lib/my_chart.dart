@@ -139,7 +139,7 @@ class _MyChartState extends State<MyChart> {
                       ),
                     );
                   },
-                  tooltipBgColor: Color.fromARGB(0, 81, 116, 82),
+                  // tooltipBgColor: Color.fromARGB(0, 81, 116, 82),
                   // tooltipBorder: BorderSide(width: 1),
                   // maxContentWidth: 50,
                   tooltipMargin: 3,

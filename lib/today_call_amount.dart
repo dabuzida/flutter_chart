@@ -310,7 +310,7 @@ class _TodayCallAmountState extends State<TodayCallAmount> {
                           ),
                         );
                       },
-                      tooltipBgColor: Colors.transparent,
+                      // tooltipBgColor: Colors.transparent,
                       tooltipMargin: 0,
                     ),
                   ),

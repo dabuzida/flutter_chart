@@ -151,7 +151,7 @@ class _MonthCallCountState extends State<MonthCallCount> {
                       ),
                     );
                   },
-                  tooltipBgColor: Colors.transparent,
+                  // tooltipBgColor: Colors.transparent,
                   tooltipMargin: 1,
                 ),
               ),
