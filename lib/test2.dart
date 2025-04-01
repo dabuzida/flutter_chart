@@ -17,7 +17,7 @@ class _Test2State extends State<Test2> {
           alignment: AlignmentDirectional.topEnd,
           children: <Widget>[
             xx(), // 밑바탕
-            xx(), // 덮어
+            // xx(), // 덮어
           ],
         ),
       ],

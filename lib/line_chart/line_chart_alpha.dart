@@ -1,8 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class LineChartt extends StatelessWidget {
-  const LineChartt({super.key});
+class LineChartAlpha extends StatelessWidget {
+  const LineChartAlpha({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class LineChartt extends StatelessWidget {
         minY: 0,
       );
 
-  LineTouchData get lineTouchData1 => LineTouchData(
+  LineTouchData get lineTouchData1 => const LineTouchData(
         handleBuiltInTouches: true,
         touchTooltipData: LineTouchTooltipData(
             // tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
@@ -37,10 +37,10 @@ class LineChartt extends StatelessWidget {
         bottomTitles: AxisTitles(
           sideTitles: bottomTitles,
         ),
-        rightTitles: AxisTitles(
+        rightTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
-        topTitles: AxisTitles(
+        topTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
         leftTitles: AxisTitles(
@@ -48,7 +48,7 @@ class LineChartt extends StatelessWidget {
         ),
       );
 
-  LineTouchData get lineTouchData2 => LineTouchData(
+  LineTouchData get lineTouchData2 => const LineTouchData(
         enabled: false,
       );
 
@@ -56,10 +56,10 @@ class LineChartt extends StatelessWidget {
         bottomTitles: AxisTitles(
           sideTitles: bottomTitles,
         ),
-        rightTitles: AxisTitles(
+        rightTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
-        topTitles: AxisTitles(
+        topTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
         leftTitles: AxisTitles(
@@ -146,7 +146,7 @@ class LineChartt extends StatelessWidget {
         getTitlesWidget: bottomTitleWidgets,
       );
 
-  FlGridData get gridData => FlGridData(show: false);
+  FlGridData get gridData => const FlGridData(show: false);
 
   FlBorderData get borderData => FlBorderData(
         show: true,
@@ -164,7 +164,7 @@ class LineChartt extends StatelessWidget {
         color: Colors.teal,
         barWidth: 4,
         isStrokeCapRound: true,
-        dotData: FlDotData(show: false),
+        dotData: const FlDotData(show: false),
         belowBarData: BarAreaData(show: false),
         spots: const [
           FlSpot(1, 1),
@@ -183,7 +183,7 @@ class LineChartt extends StatelessWidget {
         color: Colors.red,
         barWidth: 2,
         isStrokeCapRound: true,
-        dotData: FlDotData(show: true),
+        dotData: const FlDotData(show: true),
         belowBarData: BarAreaData(show: false),
         spots: const [
           FlSpot(1, 3.8),
@@ -198,7 +198,7 @@ class LineChartt extends StatelessWidget {
         color: const Color(0xff4af699),
         barWidth: 2,
         isStrokeCapRound: true,
-        dotData: FlDotData(show: false),
+        dotData: const FlDotData(show: false),
         belowBarData: BarAreaData(show: false),
         spots: const [
           FlSpot(1, 1),

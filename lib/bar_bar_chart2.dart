@@ -118,7 +118,7 @@ class _BarBarChart2State extends State<BarBarChart2> {
     return BarChart(
       key: UniqueKey(),
       BarChartData(
-        maxY: _maxYCost,
+        maxY: _maxYCost + 700, // 22222
         barTouchData: BarTouchData(
           enabled: true,
           allowTouchBarBackDraw: true,
@@ -233,7 +233,17 @@ class _BarBarChart2State extends State<BarBarChart2> {
           rightTitles: _getCostRightTitles(),
           bottomTitles: _getBottomTitles(), //TODO
         ),
-        gridData: FlGridData(show: false),
+        gridData: FlGridData(
+          show: true,
+          // checkToShowHorizontalLine: ,
+          // checkToShowVerticalLine: ,
+          // drawHorizontalLine: ,
+          // drawVerticalLine: ,
+          // getDrawingHorizontalLine: ,
+          // getDrawingVerticalLine: ,
+          // horizontalInterval: ,
+          // verticalInterval: ,
+        ),
         borderData: FlBorderData(
           show: true,
           border: Border(
@@ -318,7 +328,7 @@ class _BarBarChart2State extends State<BarBarChart2> {
       sideTitles: SideTitles(
         showTitles: true,
         reservedSize: _leftReservedSize,
-        interval: 1000,
+        interval: (_maxYCost + 700) / 5, // 1000, // 11111
         getTitlesWidget: (value, meta) => SideTitleWidget(
           axisSide: meta.axisSide,
           child: Text(

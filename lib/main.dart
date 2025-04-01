@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chart/bar_bar_chart2.dart';
+import 'package:flutter_chart/bar_bar_chart3.dart';
 import 'package:flutter_chart/bar_line/bar_line_chart.dart';
+import 'package:flutter_chart/line_chart/line_chart_beta.dart';
+import 'package:flutter_chart/line_chart/line_chart_delta.dart';
+import 'package:flutter_chart/line_chart/line_chart_epsilon.dart';
+import 'package:flutter_chart/line_chart/line_chart_gamma.dart';
 import 'package:flutter_chart/media_query_layout.dart';
+import 'package:flutter_chart/pie_chart/my_pie_chart.dart';
 import 'package:flutter_chart/test2.dart';
 
 import 'bar_bar_chart.dart';
 import 'hi_chart.dart';
-import 'line_chart/line_chartt.dart';
+import 'line_chart/line_chart_alpha.dart';
 import 'month_call_amount.dart';
 import 'month_call_count.dart';
 import 'my_chart.dart';
@@ -47,10 +53,32 @@ class MyScreen extends StatelessWidget {
         // backgroundColor: Colors.teal,
         centerTitle: true,
       ),
-      backgroundColor: Colors.grey.shade300,
+      backgroundColor: Colors.white,
+      // backgroundColor: Colors.grey.shade300,
 
       // 1
-      body: const BarBarChart2(),
+      // body: MyLineChartt(),
+      body: Container(
+        height: 800,
+        decoration: BoxDecoration(border: Border.all(color: Colors.red)),
+        child: ListView(
+          children: const <Widget>[
+            // MyPieChart(),
+            // LineChartAlpha(),
+            // LineChartBeta(),
+            // LineChartGamma(),
+            // LineChartEpsilon(),
+            // LineChartDelta(),
+            LineChartEpsilon(),
+            // PieChartSample2(),
+            // const BarBarChart3(),
+            // const BarBarChart2(),
+            // const BarBarChart(),
+            // const Test2(),
+          ],
+        ),
+      ),
+      // body: const BarBarChart2(),
       // body: const BarBarChart(),
       // body: Test2(),
 
