@@ -75,6 +75,7 @@ class MyScreen extends StatelessWidget {
             // const BarBarChart2(),
             // const BarBarChart(),
             // const Test2(),
+            const SizedBox(height: 100),
           ],
         ),
       ),
