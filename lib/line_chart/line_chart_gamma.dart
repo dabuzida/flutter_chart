@@ -137,23 +137,29 @@ class _LineChartGammaState extends State<LineChartGamma> {
               lineTouchData: LineTouchData(
                 enabled: false,
                 handleBuiltInTouches: false,
+                touchCallback: (FlTouchEvent event, LineTouchResponse? response) {
+                  if (!event.isInterestedForInteractions || response == null || response.lineBarSpots == null) {
+                    print(222);
+                    return;
+                  }
 
-                // touchCallback: (FlTouchEvent event, LineTouchResponse? response) {
-                // TODO: 꺾은선 그래프 토글시 이벤트
-                //   if (response == null || response.lineBZarSpots == null) {
-                //     return;
-                //   }
-                //   if (event is FlTapUpEvent) {
-                //     final spotIndex = response.lineBarSpots!.first.spotIndex;
-                //     setState(() {
-                //       if (showingTooltipOnSpots.contains(spotIndex)) {
-                //         showingTooltipOnSpots.remove(spotIndex);
-                //       } else {
-                //         showingTooltipOnSpots.add(spotIndex);
-                //       }
-                //     });
-                //   }
-                // },
+                  response?.lineBarSpots;
+                  print(111);
+
+                  // if (response == null || response. == null) {
+                  //   return;
+                  // }
+                  // if (event is FlTapUpEvent) {
+                  //   final spotIndex = response.lineBarSpots!.first.spotIndex;
+                  //   setState(() {
+                  //     if (showingTooltipOnSpots.contains(spotIndex)) {
+                  //       showingTooltipOnSpots.remove(spotIndex);
+                  //     } else {
+                  //       showingTooltipOnSpots.add(spotIndex);
+                  //     }
+                  //   });
+                  // }
+                },
                 // mouseCursorResolver: (FlTouchEvent event, LineTouchResponse? response) {
                 // TODO: 꺾은선 그래프에 마우스 호버시 모양 바뀜
                 //   if (response == null || response.lineBarSpots == null) {

@@ -5,8 +5,10 @@ import 'package:flutter_chart/bar_line/bar_line_chart.dart';
 import 'package:flutter_chart/line_chart/line_chart_beta.dart';
 import 'package:flutter_chart/line_chart/line_chart_delta.dart';
 import 'package:flutter_chart/line_chart/line_chart_epsilon.dart';
+import 'package:flutter_chart/line_chart/line_chart_epsilon2.dart';
 import 'package:flutter_chart/line_chart/line_chart_gamma.dart';
 import 'package:flutter_chart/media_query_layout.dart';
+import 'package:flutter_chart/my_scatter.dart';
 import 'package:flutter_chart/pie_chart/my_pie_chart.dart';
 import 'package:flutter_chart/test2.dart';
 
@@ -59,23 +61,27 @@ class MyScreen extends StatelessWidget {
       // 1
       // body: MyLineChartt(),
       body: Container(
-        height: 800,
-        decoration: BoxDecoration(border: Border.all(color: Colors.red)),
+        height: 1200,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.red),
+          // color: Colors.grey.shade400,
+        ),
         child: ListView(
-          children: const <Widget>[
+          children: <Widget>[
             // MyPieChart(),
             // LineChartAlpha(),
             // LineChartBeta(),
             // LineChartGamma(),
             // LineChartEpsilon(),
             // LineChartDelta(),
-            LineChartEpsilon(),
+            // LineChartEpsilon(),
+            // LineChartEpsilon2(),
+            MyScatter(),
             // PieChartSample2(),
             // const BarBarChart3(),
             // const BarBarChart2(),
             // const BarBarChart(),
             // const Test2(),
-            const SizedBox(height: 100),
           ],
         ),
       ),
